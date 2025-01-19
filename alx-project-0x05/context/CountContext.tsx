@@ -1,4 +1,4 @@
-import { createContext, useContext,  useState, ReactNode } from "react"
+import { createContext, useContext, useState, ReactNode } from "react"
 
 interface CountContextProps {
   count: number
@@ -6,14 +6,20 @@ interface CountContextProps {
   decrement: () => void
 }
 
-export const CountContext = createContext<CountContextProps | undefined>(undefined)
+const defaultContextValue: CountContextProps = {
+  count: 0,
+  increment: () => {},
+  decrement: () => {},
+};
+
+export const CountContext = createContext<CountContextProps>(defaultContextValue);
 
 export const CountProvider = ({ children }: { children: ReactNode}) => {
 
   const [count, setCount] = useState<number>(0)
 
-  const increment = () => setCount((count ) =>count + 1)
-  const decrement = () => setCount((count) => count > 0 ? count - 1 : 0)
+  const increment = () => setCount(prev => prev + 1)
+  const decrement = () => setCount(prev => prev > 0 ? prev - 1 : 0)
 
   return (
     <CountContext.Provider value={{ count, increment, decrement }}>
